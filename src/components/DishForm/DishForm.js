@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TimeDurationInput } from "react-time-duration-input";
+// import { TimeDurationInput } from "react-time-duration-input";
 import styles from "./DishForm.module.scss";
 
 const DishForm = () => {
@@ -37,7 +37,7 @@ const DishForm = () => {
     setEnteredSlicesOfBread(event.target.value);
   };
 
-  const submitHandler = (event) => {
+  async function submitHandler(event) {
     event.preventDefault();
 
     let dishData = "";
@@ -47,31 +47,38 @@ const DishForm = () => {
         name: enteredName,
         preparation_time: enteredPreparationTime,
         type: selectedType,
-        no_of_slices: enteredNoOfSlices,
-        diameter: enteredDiameter,
+        no_of_slices: parseInt(enteredNoOfSlices),
+        diameter: parseFloat(enteredDiameter),
       };
     } else if (selectedType === "soup") {
       dishData = {
         name: enteredName,
         preparation_time: enteredPreparationTime,
         type: selectedType,
-        spiciness_scale: selectedSpiciness,
+        spiciness_scale: parseInt(selectedSpiciness),
       };
     } else if (selectedType === "sandwich") {
       dishData = {
         name: enteredName,
         preparation_time: enteredPreparationTime,
         type: selectedType,
-        slices_of_bread: enteredSlicesofBread,
+        slices_of_bread: parseInt(enteredSlicesofBread),
       };
     }
 
-    // const dishData = {
-    //   name: enteredName,
-    //   preparation_time: enteredPreparationTime,
-    //   type: selectedType,
-    // };
-  };
+    const response = await fetch(
+      "https://frosty-wood-6558.getsandbox.com:443/dishes",
+      {
+        method: "POST",
+        body: JSON.stringify(dishData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  }
 
   return (
     <form onSubmit={submitHandler} className={styles.form}>
@@ -81,21 +88,24 @@ const DishForm = () => {
           <label>Dish name</label>
           <input
             type="text"
+            placeholder="enter a dish name"
             value={enteredName}
             onChange={dishNameChangeHandler}
           />
         </div>
         <div className={styles.form__control}>
           <label>Preparation time</label>
-          <TimeDurationInput
+          {/* <TimeDurationInput
+            value={enteredPreparationTime}
+            onChange={preparationTimeChangeHandler}
+          /> */}{" "}
+          <input
+            type="text"
+            pattern="[0-9][0-9]:[0-5][0-9]:[0-5][0-9]"
+            placeholder="00:00:00"
             value={enteredPreparationTime}
             onChange={preparationTimeChangeHandler}
           />
-          {/* <input
-          type="time"
-          value={enteredPreparationTime}
-          onChange={preparationTimeChangeHandler}
-        /> */}
         </div>
         <div className={styles.form__control}>
           <label>Dish type</label>
@@ -115,7 +125,8 @@ const DishForm = () => {
               <label>Number of slices</label>
               <input
                 type="number"
-                min="1"
+                min="0"
+                placeholder="0"
                 value={enteredNoOfSlices}
                 onChange={numberOfSlicesChangeHandler}
               />
@@ -124,6 +135,8 @@ const DishForm = () => {
               <label>Diameter</label>
               <input
                 type="float"
+                placeholder="0"
+                min="0"
                 value={enteredDiameter}
                 onChange={diameterChangeHandler}
               />
@@ -151,7 +164,7 @@ const DishForm = () => {
               <label>Slices of bread</label>
               <input
                 type="number"
-                min="1"
+                min="0"
                 value={enteredSlicesofBread}
                 onChange={slicesOfBreadChangeHandler}
               />
