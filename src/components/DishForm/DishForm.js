@@ -49,6 +49,7 @@ const DishForm = () => {
 
   return (
     <form onSubmit={submitHandler} className={styles.form}>
+      <h1 className={styles.form__heading}>Dish form</h1>
       <div className={styles.form__controls}>
         <div className={styles.form__control}>
           <label>Dish name</label>
@@ -115,9 +116,9 @@ const DishForm = () => {
             onChange={slicesOfBreadChangeHandler}
           />
         </div>
-        <div className={styles.form__actions}>
-          <button type="submit">Submit</button>
-        </div>
+      </div>
+      <div className={styles.form__actions}>
+        <button type="submit">Submit</button>
       </div>
     </form>
   );
