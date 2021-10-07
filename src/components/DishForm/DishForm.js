@@ -40,11 +40,37 @@ const DishForm = () => {
   const submitHandler = (event) => {
     event.preventDefault();
 
-    const dishData = {
-      name: enteredName,
-      preparation_time: enteredPreparationTime,
-      type: selectedType,
-    };
+    let dishData = "";
+
+    if (selectedType === "pizza") {
+      dishData = {
+        name: enteredName,
+        preparation_time: enteredPreparationTime,
+        type: selectedType,
+        no_of_slices: enteredNoOfSlices,
+        diameter: enteredDiameter,
+      };
+    } else if (selectedType === "soup") {
+      dishData = {
+        name: enteredName,
+        preparation_time: enteredPreparationTime,
+        type: selectedType,
+        spiciness_scale: selectedSpiciness,
+      };
+    } else if (selectedType === "sandwich") {
+      dishData = {
+        name: enteredName,
+        preparation_time: enteredPreparationTime,
+        type: selectedType,
+        slices_of_bread: enteredSlicesofBread,
+      };
+    }
+
+    // const dishData = {
+    //   name: enteredName,
+    //   preparation_time: enteredPreparationTime,
+    //   type: selectedType,
+    // };
   };
 
   return (
@@ -74,48 +100,64 @@ const DishForm = () => {
         <div className={styles.form__control}>
           <label>Dish type</label>
           <select onChange={dishTypeChangeHandler}>
+            <option hidden disabled selected value>
+              {" "}
+              - select a type -{" "}
+            </option>
             <option value="pizza">Pizza</option>
             <option value="soup">Soup</option>
             <option value="sandwich">Sandwich</option>
           </select>
         </div>
+        {selectedType === "pizza" && (
+          <>
+            <div className={styles.form__control}>
+              <label>Number of slices</label>
+              <input
+                type="number"
+                min="1"
+                value={enteredNoOfSlices}
+                onChange={numberOfSlicesChangeHandler}
+              />
+            </div>
+            <div className={styles.form__control}>
+              <label>Diameter</label>
+              <input
+                type="float"
+                value={enteredDiameter}
+                onChange={diameterChangeHandler}
+              />
+            </div>
+          </>
+        )}
+        {selectedType === "soup" && (
+          <>
+            <div className={styles.form__control}>
+              <label>Spiciness scale</label>
+              <input
+                type="range"
+                min="1"
+                max="10"
+                value={selectedSpiciness}
+                onChange={spicinessChangeHandler}
+              />
+            </div>
+          </>
+        )}
 
-        <div className={styles.form__control}>
-          <label>Number of slices</label>
-          <input
-            type="number"
-            min="1"
-            value={enteredNoOfSlices}
-            onChange={numberOfSlicesChangeHandler}
-          />
-        </div>
-        <div className={styles.form__control}>
-          <label>Diameter</label>
-          <input
-            type="float"
-            value={enteredDiameter}
-            onChange={diameterChangeHandler}
-          />
-        </div>
-        <div className={styles.form__control}>
-          <label>Spiciness scale</label>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            value={selectedSpiciness}
-            onChange={spicinessChangeHandler}
-          />
-        </div>
-        <div className={styles.form__control}>
-          <label>Slices of bread</label>
-          <input
-            type="number"
-            min="1"
-            value={enteredSlicesofBread}
-            onChange={slicesOfBreadChangeHandler}
-          />
-        </div>
+        {selectedType === "sandwich" && (
+          <>
+            <div className={styles.form__control}>
+              <label>Slices of bread</label>
+              <input
+                type="number"
+                min="1"
+                value={enteredSlicesofBread}
+                onChange={slicesOfBreadChangeHandler}
+              />
+            </div>
+          </>
+        )}
       </div>
       <div className={styles.form__actions}>
         <button type="submit">Submit</button>
