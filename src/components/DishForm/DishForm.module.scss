@@ -1,16 +1,13 @@
-$gradient: #f85032;
-$gradient: -webkit-linear-gradient(to right, #f85032, #e73827);
-$gradient: linear-gradient(to right, #f85032, #e73827);
+@import "../../common.module.scss";
 
 .form {
-  background: hotpink;
+  @include shadow;
   padding: 4rem;
   border-radius: 6px;
   margin: 2rem auto;
   width: 25rem;
 
   background-color: white;
-  box-shadow: 0 20px 40px -5px rgba(#310901, 0.3);
 }
 
 .form__heading {
@@ -68,19 +65,6 @@ $gradient: linear-gradient(to right, #f85032, #e73827);
 .form__actions {
   margin: auto;
   text-align: center;
-
-  & button {
-    color: white;
-    padding: 1rem;
-    border: none;
-    outline: none;
-    font: inherit;
-    border-radius: 2rem;
-
-    width: 10rem;
-    background: $gradient;
-    text-transform: uppercase;
-  }
 }
 
 input[type="range"] {

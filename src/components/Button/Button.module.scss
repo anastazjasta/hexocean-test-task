@@ -1,0 +1,14 @@
+@import "../../common.module.scss";
+
+.button {
+  color: white;
+  padding: 1rem;
+  border: none;
+  outline: none;
+  font: inherit;
+  border-radius: 2rem;
+
+  width: 10rem;
+  background: $gradient;
+  text-transform: uppercase;
+}
