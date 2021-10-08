@@ -48,11 +48,10 @@ const DishForm = () => {
 
   async function submitHandler(event) {
     event.preventDefault();
-    if (enteredName.trim().length === 0 || selectedType.trim().length === 0) {
+    if (enteredName.trim().length === 0) {
       setModal({
         title: "Invalid input",
-        message:
-          "Please enter a valid dish name and select a type of dish(non-empty value).",
+        message: "Please enter a valid dish name (non-empty value).",
       });
       return;
     }
@@ -63,19 +62,39 @@ const DishForm = () => {
       });
       return;
     }
+    if (!selectedType) {
+      setModal({
+        title: "Invalid input",
+        message: "Please select a type of dish.",
+      });
+      return;
+    }
 
     if (
       (selectedType === "pizza") &
-        (!isNaN(enteredDiameter) || parseInt(enteredDiameter) < 0) ||
-      !Number.isInteger(enteredNoOfSlices) & (parseFloat(enteredNoOfSlices) < 0)
+      (isNaN(enteredDiameter) || parseFloat(enteredDiameter) < 0)
     ) {
       setModal({
         title: "Invalid input",
         message:
-          "Please enter a valid  number of slices (value equal or greater than 0) and diameter (integer value equal or greater than 0).",
+          "Please enter a valid diameter (value equal or greater than 0).",
       });
       return;
     }
+
+    if (
+      (selectedType === "pizza") &
+      (!Number.isInteger(parseFloat(enteredNoOfSlices)) ||
+        parseInt(enteredNoOfSlices) < 0)
+    ) {
+      setModal({
+        title: "Invalid input",
+        message:
+          "Please enter a valid  number of slices (integer value equal or greater than 0).",
+      });
+      return;
+    }
+
     if ((selectedType === "soup") & !selectedSpiciness) {
       setModal({
         title: "Invalid input",
@@ -85,7 +104,7 @@ const DishForm = () => {
     }
     if (
       (selectedType === "sandwich") &
-      (!Number.isInteger(enteredSlicesofBread) &
+      (!Number.isInteger(parseFloat(enteredSlicesofBread)) &
         (parseFloat(enteredSlicesofBread) < 0))
     ) {
       setModal({
@@ -95,11 +114,6 @@ const DishForm = () => {
       });
       return;
     }
-
-    setModal({
-      title: "Dish submitted!",
-      message: "A request has been sent.",
-    });
 
     let dishData = "";
 
@@ -137,6 +151,10 @@ const DishForm = () => {
         },
       }
     );
+    setModal({
+      title: "Dish submitted!",
+      message: "A request has been sent.",
+    });
     clearForm();
     const data = await response.json();
     console.log(data);
@@ -169,10 +187,6 @@ const DishForm = () => {
           </div>
           <div className={styles.form__control}>
             <label>Preparation time</label>
-            {/* <TimeDurationInput
-            value={enteredPreparationTime}
-            onChange={preparationTimeChangeHandler}
-          /> */}{" "}
             <input
               type="text"
               placeholder="00:00:00"
@@ -198,7 +212,6 @@ const DishForm = () => {
                 <label>Number of slices</label>
                 <input
                   type="number"
-                  min="0"
                   placeholder="0"
                   value={enteredNoOfSlices}
                   onChange={numberOfSlicesChangeHandler}
