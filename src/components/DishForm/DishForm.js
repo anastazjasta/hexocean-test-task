@@ -207,7 +207,11 @@ const DishForm = () => {
           </div>
           <div className={styles.form__control}>
             <label for="dishType">Dish type</label>
-            <select name="dishType" onChange={dishTypeChangeHandler}>
+            <select
+              name="dishType"
+              onChange={dishTypeChangeHandler}
+              value={selectedType}
+            >
               <option hidden disabled selected value="">
                 {" "}
                 - select a type -{" "}
