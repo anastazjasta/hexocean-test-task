@@ -140,24 +140,33 @@ const DishForm = () => {
         slices_of_bread: parseInt(enteredSlicesofBread),
       };
     }
-
-    const response = await fetch(
-      "https://frosty-wood-6558.getsandbox.com:443/dishes",
-      {
-        method: "POST",
-        body: JSON.stringify(dishData),
-        headers: {
-          "Content-Type": "application/json",
-        },
+    try {
+      const response = await fetch(
+        "https://frosty-wood-6558.getsandbox.com:443/dishes",
+        {
+          method: "POST",
+          body: JSON.stringify(dishData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setModal({
+        title: "Dish submitted!",
+        message: "A request has been sent.",
+      });
+      clearForm();
+      const data = await response.json();
+      console.log(data);
+      if (!response.ok) {
+        throw new Error("something went wrong");
       }
-    );
-    setModal({
-      title: "Dish submitted!",
-      message: "A request has been sent.",
-    });
-    clearForm();
-    const data = await response.json();
-    console.log(data);
+    } catch (error) {
+      setModal({
+        title: "Error",
+        message: error.message,
+      });
+    }
   }
 
   const closeModal = () => {
@@ -197,7 +206,7 @@ const DishForm = () => {
           <div className={styles.form__control}>
             <label>Dish type</label>
             <select onChange={dishTypeChangeHandler}>
-              <option hidden disabled selected value>
+              <option hidden disabled selected value="">
                 {" "}
                 - select a type -{" "}
               </option>
