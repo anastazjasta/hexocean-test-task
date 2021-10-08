@@ -20,22 +20,18 @@ const DishForm = () => {
   const preparationTimeChangeHandler = (event) => {
     setEnteredPreparationTime(event.target.value);
   };
-
   const dishTypeChangeHandler = (event) => {
     setselectedType(event.target.value);
   };
-
   const numberOfSlicesChangeHandler = (event) => {
     setEnteredNoOfSlices(event.target.value);
   };
   const diameterChangeHandler = (event) => {
     setEnteredDiameter(event.target.value);
   };
-
   const spicinessChangeHandler = (event) => {
     setSelectedSpiciness(event.target.value);
   };
-
   const slicesOfBreadChangeHandler = (event) => {
     setEnteredSlicesOfBread(event.target.value);
   };
@@ -52,6 +48,54 @@ const DishForm = () => {
 
   async function submitHandler(event) {
     event.preventDefault();
+    if (enteredName.trim().length === 0 || selectedType.trim().length === 0) {
+      setModal({
+        title: "Invalid input",
+        message:
+          "Please enter a valid dish name and select a type of dish(non-empty value).",
+      });
+      return;
+    }
+    if (!enteredPreparationTime.match("[0-9][0-9]:[0-5][0-9]:[0-5][0-9]")) {
+      setModal({
+        title: "Invalid input",
+        message: "Please enter a valid preparation time (format 00:00:00).",
+      });
+      return;
+    }
+
+    if (
+      (selectedType === "pizza") &
+        (!isNaN(enteredDiameter) || parseInt(enteredDiameter) < 0) ||
+      !Number.isInteger(enteredNoOfSlices) & (parseFloat(enteredNoOfSlices) < 0)
+    ) {
+      setModal({
+        title: "Invalid input",
+        message:
+          "Please enter a valid  number of slices (value equal or greater than 0) and diameter (integer value equal or greater than 0).",
+      });
+      return;
+    }
+    if ((selectedType === "soup") & !selectedSpiciness) {
+      setModal({
+        title: "Invalid input",
+        message: "Please select a spiciness.",
+      });
+      return;
+    }
+    if (
+      (selectedType === "sandwich") &
+      (!Number.isInteger(enteredSlicesofBread) &
+        (parseFloat(enteredSlicesofBread) < 0))
+    ) {
+      setModal({
+        title: "Invalid input",
+        message:
+          "Please enter a valid slices of bread (value equal or greater than 0)",
+      });
+      return;
+    }
+
     setModal({
       title: "Dish submitted!",
       message: "A request has been sent.",
@@ -121,7 +165,6 @@ const DishForm = () => {
               placeholder="enter a dish name"
               value={enteredName}
               onChange={dishNameChangeHandler}
-              required
             />
           </div>
           <div className={styles.form__control}>
@@ -132,16 +175,14 @@ const DishForm = () => {
           /> */}{" "}
             <input
               type="text"
-              pattern="[0-9][0-9]:[0-5][0-9]:[0-5][0-9]"
               placeholder="00:00:00"
               value={enteredPreparationTime}
               onChange={preparationTimeChangeHandler}
-              required
             />
           </div>
           <div className={styles.form__control}>
             <label>Dish type</label>
-            <select onChange={dishTypeChangeHandler} required>
+            <select onChange={dishTypeChangeHandler}>
               <option hidden disabled selected value>
                 {" "}
                 - select a type -{" "}
@@ -161,7 +202,6 @@ const DishForm = () => {
                   placeholder="0"
                   value={enteredNoOfSlices}
                   onChange={numberOfSlicesChangeHandler}
-                  required
                 />
               </div>
               <div className={styles.form__control}>
@@ -169,10 +209,8 @@ const DishForm = () => {
                 <input
                   type="float"
                   placeholder="0"
-                  min="0"
                   value={enteredDiameter}
                   onChange={diameterChangeHandler}
-                  required
                 />
               </div>
             </>
@@ -187,7 +225,6 @@ const DishForm = () => {
                   max="10"
                   value={selectedSpiciness}
                   onChange={spicinessChangeHandler}
-                  required
                 />
               </div>
             </>
@@ -199,10 +236,9 @@ const DishForm = () => {
                 <label>Slices of bread</label>
                 <input
                   type="number"
-                  min="0"
+                  placeholder="0"
                   value={enteredSlicesofBread}
                   onChange={slicesOfBreadChangeHandler}
-                  required
                 />
               </div>
             </>
