@@ -12,6 +12,7 @@ const DishForm = () => {
   const [enteredDiameter, setEnteredDiameter] = useState("");
   const [selectedSpiciness, setSelectedSpiciness] = useState("");
   const [enteredSlicesofBread, setEnteredSlicesOfBread] = useState("");
+  const [modal, setModal] = useState("");
 
   const dishNameChangeHandler = (event) => {
     setenteredName(event.target.value);
@@ -41,10 +42,20 @@ const DishForm = () => {
 
   const clearForm = () => {
     setenteredName("");
+    setEnteredPreparationTime("");
+    setselectedType("");
+    setEnteredNoOfSlices("");
+    setEnteredDiameter("");
+    setSelectedSpiciness("");
+    setEnteredSlicesOfBread("");
   };
 
   async function submitHandler(event) {
     event.preventDefault();
+    setModal({
+      title: "Dish submitted!",
+      message: "A request has been sent.",
+    });
 
     let dishData = "";
 
@@ -82,13 +93,24 @@ const DishForm = () => {
         },
       }
     );
+    clearForm();
     const data = await response.json();
     console.log(data);
   }
 
+  const closeModal = () => {
+    setModal(null);
+  };
+
   return (
     <>
-      <Modal title="Dish submitted!" message="a request has been sent" />
+      {modal && (
+        <Modal
+          title={modal.title}
+          message={modal.message}
+          onConfirm={closeModal}
+        />
+      )}
       <form onSubmit={submitHandler} className={styles.form}>
         <h1 className={styles.form__heading}>Dish form</h1>
         <div className={styles.form__controls}>
