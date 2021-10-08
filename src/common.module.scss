@@ -3,5 +3,5 @@ $gradient: -webkit-linear-gradient(to right, #f85032, #e73827);
 $gradient: linear-gradient(to right, #f85032, #e73827);
 
 @mixin shadow {
-  box-shadow: 0 20px 40px -5px rgba(#310901, 0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
