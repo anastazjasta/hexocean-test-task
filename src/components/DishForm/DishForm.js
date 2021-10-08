@@ -186,8 +186,9 @@ const DishForm = () => {
         <h1 className={styles.form__heading}>Dish form</h1>
         <div className={styles.form__controls}>
           <div className={styles.form__control}>
-            <label>Dish name</label>
+            <label for="dishName">Dish name</label>
             <input
+              name="dishName"
               type="text"
               placeholder="enter a dish name"
               value={enteredName}
@@ -195,8 +196,9 @@ const DishForm = () => {
             />
           </div>
           <div className={styles.form__control}>
-            <label>Preparation time</label>
+            <label for="preparationTime">Preparation time</label>
             <input
+              name="preparationTime"
               type="text"
               placeholder="00:00:00"
               value={enteredPreparationTime}
@@ -204,8 +206,8 @@ const DishForm = () => {
             />
           </div>
           <div className={styles.form__control}>
-            <label>Dish type</label>
-            <select onChange={dishTypeChangeHandler}>
+            <label for="dishType">Dish type</label>
+            <select name="dishType" onChange={dishTypeChangeHandler}>
               <option hidden disabled selected value="">
                 {" "}
                 - select a type -{" "}
@@ -218,8 +220,9 @@ const DishForm = () => {
           {selectedType === "pizza" && (
             <>
               <div className={styles.form__control}>
-                <label>Number of slices</label>
+                <label for="noOfSlices">Number of slices</label>
                 <input
+                  name="noOfSlices"
                   type="number"
                   placeholder="0"
                   value={enteredNoOfSlices}
@@ -227,8 +230,9 @@ const DishForm = () => {
                 />
               </div>
               <div className={styles.form__control}>
-                <label>Diameter</label>
+                <label for="diameter">Diameter</label>
                 <input
+                  name="diameter"
                   type="float"
                   placeholder="0"
                   value={enteredDiameter}
@@ -240,8 +244,9 @@ const DishForm = () => {
           {selectedType === "soup" && (
             <>
               <div className={styles.form__control}>
-                <label>Spiciness scale</label>
+                <label for="spiciness">Spiciness scale</label>
                 <input
+                  name="spiciness"
                   type="range"
                   min="1"
                   max="10"
@@ -255,8 +260,9 @@ const DishForm = () => {
           {selectedType === "sandwich" && (
             <>
               <div className={styles.form__control}>
-                <label>Slices of bread</label>
+                <label for="slicesOfBread">Slices of bread</label>
                 <input
+                  name="slicesOfBread"
                   type="number"
                   placeholder="0"
                   value={enteredSlicesofBread}
